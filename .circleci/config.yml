@@ -26,7 +26,7 @@ jobs:
       - run:
           name: Upload zip file to lambda
           command: |
-            aws lambda update-function-code --function-name email_service --zip-file fileb://build.zip
+            aws lambda update-function-code --function-name email_service --zip-file fileb://build.zip --region us-east-1
 
 workflows:
   version: 2
