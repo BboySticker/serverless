@@ -21,8 +21,8 @@ jobs:
       - run:
           name: Update lambda function configuration (handler name)
           command: |
-            aws lambda update-function-configuration --function-name email_service --handler email_service.email_handler
+            aws lambda update-function-configuration --function-name email_service --handler email_service.email_handler --region us-east-1
       - run:
           name: Upload zip file to lambda
           command: |
-            aws lambda update-function-code --function-name cdye6225 --zip-file fileb://build.zip
+            aws lambda update-function-code --function-name email_service --zip-file fileb://build.zip
