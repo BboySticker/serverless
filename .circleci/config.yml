@@ -26,3 +26,18 @@ jobs:
           name: Upload zip file to lambda
           command: |
             aws lambda update-function-code --function-name email_service --zip-file fileb://build.zip
+workflows:
+  version: 2
+  pr-check-workflow:
+    jobs:
+      - pr_check
+  build-deploy-workflow:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
+      
+      
+      
