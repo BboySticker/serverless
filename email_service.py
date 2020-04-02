@@ -88,8 +88,8 @@ def token_expired(email):
             curr = int(time.time())
             if curr >= expiration_time:
                 return True
-            gap =  (expiration_time - curr) / 60
-            print("Still has: " + str(TTL - int(gap)) + " minutes")
+            gap = expiration_time - curr
+            print("Still has: " + str((TTL - gap) // 60) + " minutes")
             return False
     
 def email_exists(email):
