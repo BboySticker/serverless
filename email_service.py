@@ -38,12 +38,15 @@ def email_handler(event, context):
     # get message from SNS
     try:
         message = event['Records'][0]['Sns']['Message']
-        message = json.loads(message)
+        print("From SNS (before decoding):" + message)
+        print(type(message))
+        message = message.replace("\n\r","")
+        dic = json.loads(message, strict=False)
         print("From SNS (after decoding):" + message)
-        email_address = message['ownerEmail']  # receiver's email address
-        record_id = message['recordId']  # record id for all due bills
-        domain = message['domain'] # set the link that receiver can get the due bills
-        link = domain + "/" + record_id
+        email_address = dic['ownerEmail']  # receiver's email address
+        record_id = dic['recordId']  # record id for all due bills
+        domain = dic['domain'] # set the link that receiver can get the due bills
+        link = domain + "/v1/bills/" + record_id
     except Exception:
         logger.error("Parse SNS message error, do nothing and exit")
         return None
