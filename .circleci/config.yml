@@ -1,0 +1,28 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.6.4
+    branches:
+      only:
+      - master
+    steps:
+      - checkout
+      - run:
+          name: Install updates and AWS CLI
+          command: |
+            sudo apt-get update
+            sudo apt-get install zip unzip python3-pip -y
+            sudo pip3 install awscli
+      - run:
+          name: Package lambda function
+          command: |
+            sudo zip build.zip email_service.py
+      - run:
+          name: Update lambda function configuration (handler name)
+          command: |
+            aws lambda update-function-configuration --function-name email_service --handler email_service.email_handler
+      - run:
+          name: Upload zip file to lambda
+          command: |
+            aws lambda update-function-code --function-name cdye6225 --zip-file fileb://build.zip
