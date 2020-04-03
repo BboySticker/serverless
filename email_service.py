@@ -173,7 +173,7 @@ def send_email(email, domain, link, num_of_days):
                     'Data': SUBJECT,
                 },
             },
-            Source="noreply@" + domain + ".com",
+            Source="noreply@" + domain,
             # ConfigurationSetName=CONFIGURATION_SET,
         )
     except Exception as e:
