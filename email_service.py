@@ -44,6 +44,7 @@ def email_handler(event, context):
         dic = json.loads(message, strict=False)
         print("From SNS (after decoding):" + message)
         email_address = dic['ownerEmail']  # receiver's email address
+        num_of_days = dic['numOfDays']  # the days of due bills
         record_id = dic['recordId']  # record id for all due bills
         domain = dic['domain'] # set the link that receiver can get the due bills
         link = domain + "/v1/bills/" + record_id
@@ -61,7 +62,7 @@ def email_handler(event, context):
     # set record id as the token in dynamo db
     save_item(email_address, record_id)
     logger.info("Email token saved to DynamoDB")
-    send_email(email_address, domain, link)
+    send_email(email_address, domain, link, num_of_days)
 
     return None
 
@@ -147,7 +148,7 @@ def save_item(email, link):
             return
 
 
-def send_email(email, domain, link):
+def send_email(email, domain, link, num_of_days):
     '''send email with password reset token'''
     try:
         response = client.send_email(
@@ -164,7 +165,7 @@ def send_email(email, domain, link):
                     },
                     'Text': {
                         'Charset': CHAR_SET,
-                        'Data': BODY_TEXT + "\nhttp://" + link,
+                        'Data': BODY_TEXT.replace('X', num_of_days) + "\nhttp://" + link,
                     },
                 },
                 'Subject': {
