@@ -90,7 +90,7 @@ def token_expired(email):
             if curr >= expiration_time:
                 return True
             gap = expiration_time - curr
-            print("Still has: " + str((TTL - gap) // 60) + " minutes")
+            print("Still has: " + str(gap // 60) + " minutes")
             return False
     
 def email_exists(email):
@@ -161,7 +161,7 @@ def send_email(email, domain, link, num_of_days):
                 'Body': {
                     'Html': {
                         'Charset': CHAR_SET,
-                        'Data': BODY_HTML + "<p>" + BODY_TEXT + "<br/><br/>http://" + link + "</p></body></html>",
+                        'Data': BODY_HTML + "<p>" + BODY_TEXT.replace('X', num_of_days) + "<br/><br/>http://" + link + "</p></body></html>",
                     },
                     'Text': {
                         'Charset': CHAR_SET,
